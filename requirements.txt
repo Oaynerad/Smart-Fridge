@@ -8,3 +8,5 @@ pydantic
 langchain_community
 pandas
 langchain_openai
+ast
+re
