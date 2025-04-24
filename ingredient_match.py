@@ -18,7 +18,7 @@ def gpt_match_main_ingredient(ingredient, fridge_ingredients, client):
 请你判断该菜谱中的食材是否匹配冰箱中的某种主料？若是，请返回匹配的冰箱食材名称；若不是主料或没有匹配项，请返回“None”，返回时请按这一格式：[东北酸菜, 猪肉, None, None, None]。
 """
     response = client.chat.completions.create(
-        model="gpt-4",
+        model="gpt-4.1-mini",
         messages=[{"role": "user", "content": prompt}],
         temperature=0
     )

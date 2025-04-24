@@ -42,6 +42,7 @@ def parse_recipe_data(raw_input_list):
         })
 
         for ing in recipe.get("主料", []):
+            # print(f"食材：{ing}")
             ingredient_rows.append({
                 "菜谱编号": recipe_id,
                 "菜名": name,

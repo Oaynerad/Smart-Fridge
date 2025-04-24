@@ -92,7 +92,7 @@ def build_langchain_pipeline(
     # )
     reranker=FastKeywordRetriever(documents)
     llm = ChatOpenAI(
-        model_name="gpt-4o",
+        model_name="gpt-4.1-mini",
         openai_api_key=os.getenv("OPENAI_API_KEY"),
         temperature=0,
         max_tokens=4096
