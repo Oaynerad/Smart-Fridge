@@ -2,7 +2,7 @@ from smart_fridge_tracker import SmartFridgeTracker,extract_display_names,get_di
 import os
 import sys
 from smart_fridge_RAG import smart_fridge_RAG
-from save_json import save_raw_menu_list_to_json
+from save_raw_menu_list import save_raw_menu_list_to_json
 
 import pandas as pd
 # 创建追踪器实例
@@ -26,4 +26,4 @@ from recommendation import recommend_recipes_from_fridge
 
 result = recommend_recipes_from_fridge('raw_menu_list.json', 'fridge_inventory.json', 3) #  推荐3道菜
 for score, dish_id, dish_name in result:
-    print(f"✅ 推荐：{dish_name}（菜谱编号：{dish_id}），优先级得分：{score:.2f}")
+    print(f"✅ Recommend：{dish_name}（Dish ID：{dish_id}），Score：{score:.2f}")
