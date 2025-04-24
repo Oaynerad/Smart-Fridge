@@ -44,11 +44,11 @@ def parse_recipe_data(raw_input_list):
             "纤维素": fiber
         })
 
-        for ing in recipe.get("食材", []):
+        for ing in recipe.get("主料", []):
             ingredient_rows.append({
                 "菜谱编号": recipe_id,
                 "菜名": name,
-                "食材": ing.strip()
+                "主料": ing.strip()
             })
 
     # 构建 DataFrame
@@ -63,12 +63,12 @@ def parse_recipe_data(raw_input_list):
         else:
             return item, None
 
-    ingredient_df["原始食材"] = ingredient_df["食材"]
-    ingredient_df[["食材", "量"]] = ingredient_df["原始食材"].apply(lambda x: pd.Series(split_ingredient(x)))
+    ingredient_df["原始食材"] = ingredient_df["主料"]
+    ingredient_df[["主料", "量"]] = ingredient_df["原始食材"].apply(lambda x: pd.Series(split_ingredient(x)))
     ingredient_df.drop(columns=["原始食材"], inplace=True)
 
-    grouped = ingredient_df.groupby(['菜谱编号', '菜名'])['食材'].apply(list).reset_index()
-    ing_df = grouped['食材'].apply(pd.Series)
+    grouped = ingredient_df.groupby(['菜谱编号', '菜名'])['主料'].apply(list).reset_index()
+    ing_df = grouped['主料'].apply(pd.Series)
     final_df = pd.concat([grouped[['菜谱编号', '菜名']], ing_df], axis=1)
     ingredient_columns = final_df.columns[2:]
     final_df["食材列表"] = final_df[ingredient_columns].apply(lambda row: row.dropna().tolist(), axis=1) 
@@ -91,7 +91,7 @@ def get_fridge_inventory(json_file_path):
     # 提取食材及其 freshness_remaining
     items = data['items']
     records = [
-        {"食材": name, "保鲜剩余天数": info.get("freshness_remaining", None)}
+        {"主料": name, "保鲜剩余天数": info.get("freshness_remaining", None)}
         for name, info in items.items()
     ]
     # 转为 DataFrame

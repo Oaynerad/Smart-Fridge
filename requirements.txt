@@ -7,3 +7,4 @@ langchain_core
 pydantic
 langchain_community
 pandas
+langchain_openai
