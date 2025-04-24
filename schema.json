@@ -1,0 +1,29 @@
+text={
+                "format": {
+                "type": "json_schema",
+                "name": "food_identification",
+                "strict": True,
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                    "specific_name": {
+                        "type": "string",
+                        "description": "Specific food name (e.g., 'Granny Smith apple')"
+                    },
+                    "sub_category": {
+                        "type": "string",
+                        "description": "Sub-category of the food (e.g., 'green apple')"
+                    },
+                    "category": {
+                        "type": "string",
+                        "description": "Broad category (e.g., 'fruit', 'dairy')"
+                    }
+                    },
+                    "required": [
+                    "specific_name",
+                    "sub_category",
+                    "category"
+                    ],
+                    "additionalProperties": False
+                }
+                }
