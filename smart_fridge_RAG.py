@@ -251,7 +251,7 @@ def smart_fridge_RAG(knowledge_path='RAG/scrape',keywords = ['鸡蛋盒', '生�
     for kw in keywords:
         result = pipeline_fn(f"主料：{kw}")
         parsed = extract_answer(result)
-        if parsed!='None':
+        if parsed!="'None'":
             all_results.append(parsed)
 
 # 输出所有 JSON 结果
