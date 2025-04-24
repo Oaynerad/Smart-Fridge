@@ -4,7 +4,7 @@ import json
 import pandas as pd
 import ast
 from menu_list import get_fridge_inventory
-from ing_match import process_fridge_recipes
+from ingredient_match import process_fridge_recipes
 
 def recommend_recipes_from_fridge(raw_menue_list, fridge_ingredients_json_path, dish_amount):
     # 获取冰箱食材

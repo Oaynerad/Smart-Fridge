@@ -8,8 +8,8 @@ from langchain_core.documents.compressor import BaseDocumentCompressor
 from langchain_core.callbacks import Callbacks
 from pydantic import Field, PrivateAttr
 from langchain.schema import Document
-from langchain.retrievers import BM25Retriever
-from langchain.chat_models import ChatOpenAI
+from langchain_community.retrievers import BM25Retriever
+from langchain_community.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 import re
@@ -81,6 +81,7 @@ def build_langchain_pipeline(
     documents: List[Document],
     default_prompt_template: str,
     top_k: int = 100,
+    keywords: List[str] = ['鸡蛋盒', '生菜', '胡萝卜', '猪肉', '嫩豆腐', '茄子'],
 ):
     #fewshotpipeline = FewShotPipeline(q_list, a_list, topk)
     # bm25_retriever = BM25Retriever.from_documents(documents,k=100)#input: List[Document],run :query:str->List[Document]
@@ -179,8 +180,9 @@ def extract_answer(text):
     text = text.split("Answer:", 1)[-1].strip()
     #return text.split("\n\n", 1)[0].strip()
     return text
-if __name__ == "__main__":
-    folder_path = r"D:\hw2_new\scrape"
+
+def smart_fridge_RAG(knowledge_path='RAG/scrape',keywords = ['鸡蛋盒', '生菜', '胡萝卜', '猪肉', '嫩豆腐', '茄子']):
+    folder_path = knowledge_path
     docs = load_txt_files(folder_path)
     docs_processed = ParagraphThenCharacterSplitter().process(docs)
     sample_docs = docs_processed
@@ -228,12 +230,14 @@ if __name__ == "__main__":
     )
     pipeline_fn = build_langchain_pipeline(
         documents=sample_docs,
-        default_prompt_template=default_prompt
+        default_prompt_template=default_prompt,
+        keywords=keywords
     )
     # answer = pipeline_fn("主料：猪肉")
     # answer = extract_answer(answer)
     # print('____________',answer)
     # 输入关键词列表
+    
     keywords = ['鸡蛋盒', '生菜', '胡萝卜', '猪肉', '嫩豆腐', '茄子']
 
 # 存放所有结果
@@ -249,3 +253,10 @@ if __name__ == "__main__":
 
 
 #    predictions = predict_answers(pipeline_fn, questions)
+
+
+if __name__ == "__main__":
+    # 运行主函数
+    smart_fridge_RAG()
+    # 运行测试函数
+    # test_smart_fridge_RAG()

@@ -77,8 +77,8 @@ def parse_recipe_data(raw_input_list):
 
 main_df, ing_df = parse_recipe_data(raw_input_list)
 
-print("\n--- 主营养信息表 ---")
-print(main_df)
+# print("\n--- 主营养信息表 ---")
+# print(main_df)
 
 '''print("\n--- 食材明细表（拆分） ---")
 print(ing_df)'''
