@@ -26,4 +26,4 @@ from recommendation import recommend_recipes_from_fridge
 
 result = recommend_recipes_from_fridge('raw_menu_list.json', 'fridge_inventory.json', 3) #  推荐3道菜
 for score, dish_id, dish_name in result:
-    print(f"✅ 推荐：{dish_name}（菜谱编号：{dish_id}），优先级得分：{score:.2f}")
+    print(f"✅ Recommend：{dish_name}（Dish ID：{dish_id}），Score：{score:.2f}")
