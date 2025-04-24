@@ -259,12 +259,41 @@ def extract_json_from_string(text: str):
     
     return json.loads(json_str)
 
+
+def extract_display_names(data: Dict[str, Any]) -> List[str]:
+    """
+    Extract all display_name values from the fridge-inventory JSON.
+
+    Args:
+        data: Dict loaded from JSON, with structure:
+            {
+              "items": {
+                "<id>": { "display_name": "...", ... },
+                ...
+              },
+              ...
+            }
+
+    Returns:
+        A list of display_name strings.
+    """
+    return [
+        item.get("display_name")
+        for item in data.get("items", {}).values()
+        if "display_name" in item
+    ]
+
+# If you want to load directly from a file:
+def get_display_names_from_file(filepath: str) -> List[str]:
+    with open(filepath, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return extract_display_names(data)
 # 示例用法
 if __name__ == "__main__":
     # 创建追踪器实例
     tracker = SmartFridgeTracker()
 
-    result = tracker.process_fridge_update("sample_image_model_fridge/5.jpg")
+    result = tracker.process_fridge_update("sample_image_model_fridge/6.jpg")
     
     # # 输出结果
     if result["success"]:
