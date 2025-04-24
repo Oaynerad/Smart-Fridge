@@ -2,7 +2,7 @@ from smart_fridge_tracker import SmartFridgeTracker,extract_display_names,get_di
 import os
 import sys
 from smart_fridge_RAG import smart_fridge_RAG
-from save_json import save_raw_menu_list_to_json
+from save_raw_menu_list import save_raw_menu_list_to_json
 
 import pandas as pd
 # 创建追踪器实例
