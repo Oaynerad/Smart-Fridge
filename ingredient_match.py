@@ -61,7 +61,7 @@ def parse_recipe_data(file_path):
             "脂肪": recipe.get("脂肪"),
             "碳水化合物": recipe.get("碳水化合物"),
             "纤维素": recipe.get("纤维素"),
-            "食材列表": recipe.get("食材")
+            "食材列表": recipe.get("食材"),
             "做法":recipe.get("做法步骤")
         })
 
