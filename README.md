@@ -1,17 +1,8 @@
 # Smart Fridge 
-## Installation
-
-1. **Clone the repo**:
-   ```bash
-   git clone <repository_url>
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ``` 
-
-## Temperature from PICO
+Tracker - RAG with recipe - Recommendation
+## DEMO
+Exact steps to run the whole pipeline
+### Start obtaining Temperature from PICO
 1. **run the `wifi_trans.py` on PICO**
 
 2. **run the flask server**:
@@ -20,47 +11,45 @@
    ```
    _WIFI password and server ip needs to be modified_
 
-3. **run UI.py**:
-  ```bash
+3. **run UI.py**: (Just to check whether the temp works - the recipe is just the last recommendation based on our last run)
+    ```bash
    streamlit run UI.py
    ```
+
+### Obtain the photo
+run `python拉流截图.py`
+###
+### 
 ## SmartFridgeTracker
+_Daren Yao_
 
 A lightweight Python utility to track and manage refrigerator inventory by analyzing images using a Vision-Language Model (VLM) via the OpenAI API. It detects items, normalizes names, reconciles synonyms, and calculates freshness over time.
+
+In `smart_fridge_tracker.py`, I implemented a LLM pipeline in a class `SmartFridgeTracker` that could update `fridge_inventory.json` with new fridge photos.
+
+The core function is based on two steps of calling LLM in `update_inventory`: 
+- `analyze_image`: Recognize the contents of the refrigerator by VLM and generate stable output (Part of the prompt: “Be sure to keep the naming stable in the same scenario without the brand message.”)
+- `_reconcile_names`: Ask the LLM to judge whether the new specific name is a new food in the fridge or just a alias. (And output the mapping dict)
+
 
 ### Features
 
 - **Image Encoding**: Convert local images to Base64 for API calls.
 - **VLM Integration**: Use OpenAI’s `gpt-4.1-mini` to recognize food items in images.
 - **Name Normalization**: Strip whitespace and lowercase names for consistent matching.
-- **Synonym Reconciliation**: Detect aliases (e.g., "青苹果" vs. "绿苹果") with an LLM prompt and merge entries.
+- **Synonym Reconciliation**: Detect aliases (e.g., "purple eggplant" vs "eggplant") with an LLM prompt and merge entries.
 - **Inventory Management**:
   - Add new items, update `last_seen`, remove missing items.
   - Store `display_name`, `added_date`, `last_seen`, and `aliases` in a JSON DB.
 - **Freshness Tracking**: Compute remaining shelf life (default 7 days) for each item.
-- **Standalone CLI Usage**: Process an image and output changes.
 
 
 
 ### Configuration
 
-- **`db_path`**: Path to the JSON inventory file (`fridge_inventory.json` by default).
+- **`db_path`**: Path to the JSON inventory file (`fridge_inventory.json` by default, we will use this name for the whole project).
 - **OpenAI API Key**: Set via `OPENAI_API_KEY` environment variable.
 
-### Usage
-
-```bash
-python smart_fridge.py 
-```
-
-This will:
-
-1. Encode and analyze the image.
-2. Parse the returned JSON for `specific_name` fields.
-3. Update the local inventory (`fridge_inventory.json`).
-4. Reconcile synonyms via LLM.
-5. Compute and save freshness information.
-6. Print added/removed items and a timestamp.
 
 ### Core Components
 
@@ -104,7 +93,18 @@ Output:
 }
 ```
 
----
+## Installation
 
-Feel free to customize shelf life, database path, or extend VLM prompting logic as needed.
+1. **Clone the repo**:
+   ```bash
+   git clone <repository_url>
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ``` 
+
+
+
 
