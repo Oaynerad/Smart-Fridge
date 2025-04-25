@@ -44,6 +44,7 @@ def recommend_top_n_meals(final_df, fridge_df, top_n=3):
         dish_id = row["菜谱编号"]
         dish_name = row["菜名"]
         match_list = row["匹配冰箱食材"]
+        cook_method = row["做法"]
  
         if not isinstance(match_list, list):
             print('Error! Match_list is not a list')
@@ -80,7 +81,7 @@ def recommend_top_n_meals(final_df, fridge_df, top_n=3):
             0.3 * carbon_score
         )
 
-        recommendations.append((final_score, dish_id, dish_name))
+        recommendations.append((final_score, dish_id, dish_name, cook_method))
 
     recommendations.sort(key=lambda x: -x[0])
     return recommendations[:top_n]
@@ -89,7 +90,7 @@ def recommend_top_n_meals(final_df, fridge_df, top_n=3):
 def translate_dish_names(results, client):
     translated_results = []
 
-    for score, dish_id, dish_name  in results:
+    for score, dish_id, dish_name, cook_method  in results:
         # 构造 prompt
         prompt = f"请将下面的菜名翻译成英文，仅返回英文名称，不需要解释，也不要加其他字符：\n\n{dish_name}"
 
@@ -102,7 +103,7 @@ def translate_dish_names(results, client):
 
         # 获取翻译结果
         translated_name = response.choices[0].message.content.strip()
-        translated_results.append((score, dish_id, translated_name))
+        translated_results.append((score, dish_id, translated_name, cook_method))
 
     return translated_results
 

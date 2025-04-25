@@ -26,8 +26,8 @@ def SmartFridge():
     from recommendation import recommend_recipes_from_fridge
 
     result = recommend_recipes_from_fridge('raw_menu_list.json', 'fridge_inventory.json', 3) #  推荐3道菜
-    for score, dish_id, dish_name in result:
-        print(f"✅ Recommend：{dish_name}（Dish ID：{dish_id}），Score：{score:.2f}")
+    for score, dish_id, dish_name, cook_method in result:
+        print(f"✅ Recommend：{dish_name}（Dish ID：{dish_id}），Score：{score:.2f}，Cook method：{cook_method}")
     
     return result
 
