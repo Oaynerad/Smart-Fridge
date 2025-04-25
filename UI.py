@@ -52,7 +52,7 @@ for item in fridge_items:
 
 # 图片展示
 st.subheader("🖼️ Fridge Image")
-st.image("sample_image_model_fridge/6.jpg", caption="Latest Image from the Fridge", use_column_width=True)
+st.image("sample_image_model_fridge/6.jpg", caption="Latest Image from the Fridge", use_container_width=True)
 
 # 推荐系统
 st.subheader("🍲 Recipe Recommendations")
