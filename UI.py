@@ -5,7 +5,7 @@ import time
 import requests
 from streamlit_autorefresh import st_autorefresh
 from main import SmartFridge
-
+from deep_translator import GoogleTranslator
 
 
 # --- load fridge inventory from JSON ---
