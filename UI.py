@@ -1,88 +1,105 @@
 import streamlit as st
+import json
 from datetime import datetime
 
-# 初始化状态
+# --- load fridge inventory from JSON ---
+def load_fridge_items(path="fridge_inventory.json"):
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f).get("items", {})
+    items = []
+    for key, v in data.items():
+        # parse out just the date, and freshness
+        added = v.get("added_date", "").split("T")[0]
+        freshness = v.get("freshness_remaining", None)
+        items.append({
+            "name": v.get("display_name", key),
+            "added_date": added,
+            "freshness": freshness
+        })
+    return items
+
+# Initialize state
 if "page" not in st.session_state:
-    st.session_state.page = "首页"
+    st.session_state.page = "Home"
 if "selected_recipe" not in st.session_state:
     st.session_state.selected_recipe = None
 
 def go_to(page):
     st.session_state.page = page
+    
+fridge_items = load_fridge_items()
+# Main page - Home
+if st.session_state.page == "Home":
+    st.title("🏠 Smart Fridge Home")
 
-# 示例数据
-fridge_items = [
-    {"name": "鸡蛋", "added_date": "2025-04-21"},
-    {"name": "生菜", "added_date": "2025-04-23"},
-    {"name": "猪肉", "added_date": "2025-04-22"},
-]
+    # Temperature display section
+    st.header("🌡️ Current Temperature")
+    st.metric("Fridge Temperature", "4°C", "-0.5°C")
+    if st.button("Switch to ℉"):
+        st.success("Switching to Fahrenheit is not yet implemented")
 
-recipe_list = [
-    {"name": "番茄炒蛋", "id": 1, "details": "做法：番茄炒蛋……"},
-    {"name": "蒜蓉生菜", "id": 2, "details": "做法：蒜蓉炒生菜……"},
-    {"name": "红烧肉", "id": 3, "details": "做法：红烧肉……"},
-]
+    # Food storage section (dynamically loaded)
+    st.header("🧊 Food Storage in Fridge")
 
-# 主页面 - 首页
-if st.session_state.page == "首页":
-    st.title("🏠 智能冰箱首页")
+    # if not fridge_items:
+    #     st.write("No items found in fridge inventory.")
+    # else:
+    #     for item in fridge_items:
+    #         st.write(
+    #             f"- **{item['name']}**  "
+    #             f"Added: {item['added_date']}  "
+    #             f"Freshness remaining: {item['freshness']} days"
+    #         )
 
-    # 温度显示区域
-    st.header("🌡️ 当前温度")
-    st.metric("冰箱温度", "4°C", "-0.5°C")
-    if st.button("切换为 ℉"):
-        st.success("切换为华氏度功能尚未实现")
-
-    # 食品存放区域
-    st.header("🧊 冰箱内食品存放")
+    # Navigation buttons
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("📋 食品详细情况"):
-            go_to("食品详细")
+        if st.button("📋 Food Details"):
+            go_to("Food Details")
     with col2:
-        if st.button("🖼️ 图片显示"):
-            go_to("图片展示")
+        if st.button("🖼️ Image Display"):
+            go_to("Image Display")
 
-    # 菜谱推荐按钮
-    st.header("🍲 菜谱推荐")
-    if st.button("🔍 进入菜谱推荐"):
-        go_to("菜谱推荐")
-
-# 食品详细页面
-elif st.session_state.page == "食品详细":
-    st.title("📋 食品详细信息")
+    # Recipe recommendation button
+    st.header("🍲 Recipe Recommendations")
+    if st.button("🔍 Go to Recipe Recommendations"):
+        go_to("Recipe Recommendations")
+ 
+# Food details page
+elif st.session_state.page == "Food Details":
+    st.title("📋 Food Details")
     for item in fridge_items:
-        st.write(f"食材：{item['name']}，入库时间：{item['added_date']}")
-    st.button("🔙 返回", on_click=lambda: go_to("首页"))
+        st.write(f"Item: {item['name']}, Added Date: {item['added_date']}")
+    st.button("🔙 Back", on_click=lambda: go_to("Home"))
 
-# 图片展示页面
-elif st.session_state.page == "图片展示":
-    st.title("🖼️ 冰箱内图片展示")
-    st.image("https://placekitten.com/400/300", caption="冰箱内拍摄图像")
-    st.button("🔙 返回", on_click=lambda: go_to("首页"))
+# Image display page
+elif st.session_state.page == "Image Display":
+    st.title("🖼️ Fridge Image Display")
+    st.image("https://placekitten.com/400/300", caption="Image taken inside the fridge")
+    st.button("🔙 Back", on_click=lambda: go_to("Home"))
 
-# 菜谱推荐主页面
-elif st.session_state.page == "菜谱推荐":
-    st.title("🍽️ 菜谱推荐")
-    count = st.number_input("你想要推荐几道菜？", min_value=1, max_value=5, value=2, step=1)
-    if st.button("📥 获取推荐结果"):
+# Recipe recommendations main page
+elif st.session_state.page == "Recipe Recommendations":
+    st.title("🍽️ Recipe Recommendations")
+    count = st.number_input("How many recipes would you like to recommend?", min_value=1, max_value=5, value=2, step=1)
+    if st.button("📥 Get Recommendations"):
         st.session_state.recommended = recipe_list[:count]
 
-    # 展示推荐结果
+    # Display recommended recipes
     if "recommended" in st.session_state:
         for recipe in st.session_state.recommended:
             with st.expander(recipe["name"]):
-                if st.button(f"🔍 查看 {recipe['name']} 详情", key=f"view_{recipe['id']}"):
+                if st.button(f"🔍 View {recipe['name']} Details", key=f"view_{recipe['id']}"):
                     st.session_state.selected_recipe = recipe
-                    go_to("菜谱详情")
+                    go_to("Recipe Details")
 
-    st.button("🔙 返回首页", on_click=lambda: go_to("首页"))
+    st.button("🔙 Back to Home", on_click=lambda: go_to("Home"))
 
-# 菜谱详细信息页面
-elif st.session_state.page == "菜谱详情":
+# Recipe details page
+elif st.session_state.page == "Recipe Details":
     recipe = st.session_state.selected_recipe
-    st.title(f"🍛 {recipe['name']} 的详细信息")
+    st.title(f"🍛 {recipe['name']} Details")
     st.write(recipe["details"])
-    st.button("🔙 返回菜谱推荐", on_click=lambda: go_to("菜谱推荐"))
+    st.button("🔙 Back to Recipe Recommendations", on_click=lambda: go_to("Recipe Recommendations"))
 
-# streamlit run "D:\CMU\12770\Fridge\Smart-Fridge\UI.py"
+# streamlit run UI.py

@@ -10,3 +10,4 @@ pandas
 langchain_openai
 ast
 re
+streamlit
