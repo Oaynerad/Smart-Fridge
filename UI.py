@@ -4,6 +4,9 @@ from datetime import datetime
 import time
 import requests
 from streamlit_autorefresh import st_autorefresh
+from main import SmartFridge
+
+
 
 # --- load fridge inventory from JSON ---
 def load_fridge_items(path="fridge_inventory.json"):
@@ -20,6 +23,16 @@ def load_fridge_items(path="fridge_inventory.json"):
             "freshness": freshness
         })
     return items
+
+# --- load recipe recommendation from JSON ---
+def get_recommendations(path="recommended_recipes.json"):
+    import json
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    # 可以增加更多字段（如详情）作为 st.write 的内容
+    for item in data:
+        item["details"] = f"Score: {item['score']:.2f} (Dish ID: {item['id']})"
+    return data
 
 
 
@@ -57,8 +70,9 @@ st.image("sample_image_model_fridge/6.jpg", caption="Latest Image from the Fridg
 # 推荐系统
 st.subheader("🍲 Recipe Recommendations")
 count = st.number_input("How many recipes would you like to recommend?", min_value=1, max_value=5, value=2, step=1)
+
 if st.button("📥 Get Recommendations"):
-    st.session_state.recommended = recipe_list[:count]
+    st.session_state.recommended = get_recommendations()[:count]
 
 if "recommended" in st.session_state:
     for recipe in st.session_state.recommended:
