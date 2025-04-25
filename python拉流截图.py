@@ -3,7 +3,7 @@ import time
 import os
 from datetime import datetime
 
-def capture_rtsp_stream(rtsp_url: str, interval_sec: int = 2, save_dir: str = "sample_image_model_fridge"):
+def capture_rtsp_stream(rtsp_url: str, interval_sec: int = 2, save_dir: str = "sample_image_demo"):
     """
     每隔 interval_sec 秒从 RTSP 拉流截图一次，并覆盖保存为 sample_image_model_fridge/6.jpg。
 
