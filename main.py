@@ -11,7 +11,7 @@ def SmartFridge():
     tracker = SmartFridgeTracker()
 
 
-    result = tracker.process_fridge_update("sample_image_model_fridge/6.jpg")
+    result = tracker.process_fridge_update("sample_image_model_fridge/6.jpg") # update this after obtaining the photo
     if result["success"]:
         print("冰箱内容更新成功！")
         print(f"Changes:{result['changes']}")

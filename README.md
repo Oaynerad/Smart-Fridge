@@ -1,25 +1,49 @@
 # Smart Fridge 
-Tracker - RAG with recipe - Recommendation
+Daren Yao | Jinsong Yuan | Jiarui Zhang
+
+### **Tracker - RAG(recipe) - Recommender**
+
+We designed an intelligent refrigerator system that integrates **food recognition** and freshness tracking, **generates recipe candidates** using Retrieval-Augmented Generation (RAG), and optimizes recommendations based on primary ingredients to **reduce food waste and ensure nutritional balance.**
+## Installation
+
+1. **Clone the repo**:
+   ```bash
+   git clone <repository_url>
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ``` 
+
 ## DEMO
 Exact steps to run the whole pipeline
-### Start obtaining Temperature from PICO
+### I. Start obtaining Temperature from PICO
 1. **run the `wifi_trans.py` on PICO**
 
+    _WIFI password and server ip needs to be modified_
 2. **run the flask server**:
    ```bash
    python server.py
    ```
-   _WIFI password and server ip needs to be modified_
+   
 
 3. **run UI.py**: (Just to check whether the temp works - the recipe is just the last recommendation based on our last run)
     ```bash
    streamlit run UI.py
    ```
 
-### Obtain the photo
-run `python拉流截图.py`
-###
-### 
+### II. Obtain the photo
+- run `python拉流截图.py`
+- update the path for `tracker.process_fridge_update("sample_image_model_fridge/6.jpg")` in `main.SmartFridge`
+### III. Let's go!
+```bash
+ python main.py
+ streamlit run UI.py
+ ```
+### Demo variants
+- To test the tracker, just change the food in the fridge model and rerun the whole pipeline. (I will explain the Chinese output)
+- To test the recommender, we can manually change the added_date to make some food "unfresh", which will make it's score higher
 ## SmartFridgeTracker
 _Daren Yao_
 
@@ -93,17 +117,6 @@ Output:
 }
 ```
 
-## Installation
-
-1. **Clone the repo**:
-   ```bash
-   git clone <repository_url>
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ``` 
 
 
 
