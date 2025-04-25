@@ -47,4 +47,4 @@ def capture_rtsp_stream(rtsp_url: str, interval_sec: int = 2, save_dir: str = "s
 # 示例用法
 if __name__ == "__main__":
     rtsp_url = "rtsp://admin:13758255798%40Yjs@192.168.31.64:554/h264/ch1/main/av_stream"
-    capture_rtsp_stream(rtsp_url, interval_sec=2, save_dir="sample_image_model_fridge")
+    capture_rtsp_stream(rtsp_url, interval_sec=2, save_dir="sample_image_demo")
