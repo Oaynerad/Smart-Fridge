@@ -6,7 +6,7 @@ import openai
 import os
 from tqdm import tqdm
 
-# 调用GPT的prompt
+# build GPT prompt
 def gpt_match_main_ingredient(ingredient, fridge_ingredients, client):
     prompt = f"""你是一位智能厨房助理。请判断下面这道菜的主料（忽略括号里的食材数量）是否是“冰箱中已有的食材”，即：
 - 是冰箱中已有的某种食材（即使名称有差异，但意义相同，比如紫皮茄子->茄子）
@@ -24,32 +24,31 @@ def gpt_match_main_ingredient(ingredient, fridge_ingredients, client):
     )
     return response.choices[0].message.content.strip()
 
-# 从json中获取冰箱的食材
+# from json get inventory in fridge
 def get_fridge_inventory(json_file_path):
-    # 读取 JSON 文件
+    # read JSON file
     with open(json_file_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
-    # 提取食材及其 freshness_remaining
+    # get ingredients and freshness_remaining
     items = data['items']
     records = [
         {"食材": name, "保鲜剩余天数": info.get("freshness_remaining", None)}
         for name, info in items.items()
     ]
-    # 转为 DataFrame
+    # transform to DataFrame
     fridge_ingredients = pd.DataFrame(records)
     return fridge_ingredients
 
-# 从list中获得菜谱中的主料
+# from list get main ingredients in dishes
 def parse_recipe_data(file_path):
 
-    # 读取 JSON 文件
+    # read JSON file
     with open(file_path, 'r', encoding='utf-8') as f:
         raw_data = json.load(f)
 
-    # 展开每一个子列表中的字典
     recipes = [item for sublist in raw_data if isinstance(sublist, list) for item in sublist]
 
-    # 构建 DataFrame
+    # build DataFrame
     df_records = []
     for recipe in recipes:
         df_records.append({
@@ -68,9 +67,9 @@ def parse_recipe_data(file_path):
     df = pd.DataFrame(df_records)
     return df, df.copy()
 
-# 调用GPT对菜谱中的主料和冰箱的食材进行匹配
+# match the ingredients of the dishes with inventory in fridge
 def process_fridge_recipes(json_path, raw_menu_list):
-    # 1. 加载冰箱 JSON 文件
+    # 1. load fridge JSON file
     with open(json_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
@@ -81,13 +80,13 @@ def process_fridge_recipes(json_path, raw_menu_list):
     ]
     fridge_ingredients = pd.DataFrame(records)
 
-    # 2. 解析菜谱数据
+    # 2. get menu
     main_df, final_df = parse_recipe_data(raw_menu_list)
 
-    # 3. 创建 OpenAI 客户端
+    # 3. create OpenAI client
     client = openai.OpenAI()
 
-    # 4. 匹配冰箱主料
+    # 4. match with inventory in fridge
     matched_names = []
     for _, row in tqdm(final_df.iterrows(), total=len(final_df)):
         match = gpt_match_main_ingredient(row["食材列表"], fridge_ingredients, client)

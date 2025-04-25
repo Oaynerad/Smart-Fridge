@@ -16,6 +16,9 @@ We designed an intelligent refrigerator system that integrates **food recognitio
    pip install -r requirements.txt
    ``` 
 
+3. **Python version**:
+   We sugest using python 3.11.11.
+
 ## DEMO
 Exact steps to run the whole pipeline
 ### I. Start obtaining Temperature from PICO
@@ -118,9 +121,71 @@ Output:
 ```
 ## RAG
 _Jinsong Yuan_
+
 ## Recommender
 _Jiarui Zhang_
 
+The main job of the Recommender part can be divided into 2 parts:
+
+### ingredient_match.py 
+
+Process JSON files containing information about the current items in the fridge and the recipes organized based on the available ingredients, and extract the relevant information. Match the main ingredients of each recipe with the available items in the fridge to obtain their freshness levels and to determine which ingredients are needed for cooking.
+
+#### File Structure
+
+fridge_inventory.json: Current fridge inventory, including ingredient names and remaining freshness days
+raw_menu_list.json: A list of recipes, each containing main ingredients, nutritional info, etc.
+
+#### Usage
+
+```python
+df = process_fridge_recipes('fridge_inventory.json', 'raw_menu_list.json')
+```
+
+### recommendation.py
+
+Prioritize the use of ingredients that are close to expiring, while referring to the nutritional content and carbon footprint data of each dish. Optimize with the goals of minimizing food waste and carbon emissions, and maximizing health. Based on the number of dishes the user wishes to prepare for the day, return recipe recommendations along with their cooking methods. Additionally, since this project primarily focuses on Chinese cuisine, the established knowledge base is in Chinese. Therefore, the recommended recipes and cooking methods will be translated into English before being presented to the user.
+
+#### function explaination
+
+- **`parse_carbon_footprint(carbon_str)`**:	Extracts the numeric value from strings like "0.2 千克二氧化碳当量" and converts it to a float
+- **`safe_float_gram(s)`**:	Converts strings like "5g" into float values
+- **`force_parse_to_list(x)`**:	Safely parses a string or list into a Python list, handling cases with None or malformed input
+- **`recommend_top_n_meals(final_df, fridge_df, top_n=3)`**:	Scores and ranks recipes based on ingredient match, freshness, nutrition, and carbon footprint, and returns the top n recommendations
+- **`translate_dish_names(results, client)`**:	Uses GPT to translate dish names and cooking methods from Chinese to English
+- **`recommend_recipes_from_fridge(raw_menu_path, fridge_inventory_path, dish_amount)`**:	Main orchestration function that loads data, matches ingredients, ranks recipes, translates results, and returns the top recommended dishes (with English translations)
+
+#### Usage
+
+```python
+result = recommend_recipes_from_fridge('raw_menu_list.json', 'fridge_inventory.json', dish_amount)
+```
+
+## Smart Fridge Dashboard (Streamlit Interface)
+_Daren Yao_, _Jiarui Zhang_
 
 
+This script creates a **Streamlit-based web dashboard** for a smart fridge system, integrating real-time display, inventory status, and recipe recommendation.
 
+### Features
+
+| Module                     | Description                                                                    |
+|----------------------------|--------------------------------------------------------------------------------|
+| **Temperature Display**    | Fetches current fridge temperature from a Flask server and shows °C and °F     |
+| **Fridge Inventory**       | Loads current ingredients from `fridge_inventory.json` and shows freshness     |
+| **Fridge Image**           | Displays a snapshot of the fridge interior (`6.jpg` as a sample image)         |
+| **Recipe Recommendations** | On button click, loads top recommended recipes from `recommended_recipes.json` |
+| **Auto Refresh**           | Automatically refreshes the dashboard every 5 seconds                          |
+
+### File Structure
+
+- `fridge_inventory.json`: Stores fridge items and freshness days
+- `recommended_recipes.json`: Contains precomputed recipe recommendations
+- `sample_image_model_fridge/6.jpg`: Sample fridge interior image (can be updated live)
+
+###  How to Run
+
+Make sure all dependencies are installed, then run:
+```bash
+streamlit run UI.py
+```
