@@ -3,7 +3,7 @@
     "生菜": {
       "display_name": "生菜",
       "added_date": "2025-04-23T13:36:32.468738",
-      "last_seen": "2025-04-24T17:52:55.306207",
+      "last_seen": "2025-04-24T21:07:55.311413",
       "aliases": [
         "生菜"
       ],
@@ -12,41 +12,41 @@
     "胡萝卜": {
       "display_name": "胡萝卜",
       "added_date": "2025-04-23T20:53:56.395926",
-      "last_seen": "2025-04-24T17:52:55.306207",
+      "last_seen": "2025-04-24T21:07:55.311413",
       "aliases": [
         "胡萝卜"
       ],
-      "freshness_remaining": 7
+      "freshness_remaining": 6
     },
     "猪肉": {
       "display_name": "猪肉",
       "added_date": "2025-04-23T20:53:56.395926",
-      "last_seen": "2025-04-24T17:52:55.306207",
+      "last_seen": "2025-04-24T21:07:55.311413",
       "aliases": [
         "猪肉"
       ],
-      "freshness_remaining": 7
-    },
-    "嫩豆腐": {
-      "display_name": "嫩豆腐",
-      "added_date": "2025-04-23T20:53:56.395926",
-      "last_seen": "2025-04-24T17:52:55.306207",
-      "aliases": [
-        "嫩豆腐",
-        "豆腐"
-      ],
-      "freshness_remaining": 7
+      "freshness_remaining": 6
     },
     "鸡蛋": {
       "display_name": "鸡蛋",
       "added_date": "2025-04-24T13:56:24.316683",
-      "last_seen": "2025-04-24T17:52:55.306207",
+      "last_seen": "2025-04-24T21:07:55.311413",
       "aliases": [
         "鸡蛋"
       ],
       "freshness_remaining": 7
+    },
+    "豆腐": {
+      "display_name": "豆腐",
+      "added_date": "2025-04-24T20:42:47.949716",
+      "last_seen": "2025-04-24T21:07:55.311413",
+      "aliases": [
+        "豆腐",
+        "嫩豆腐"
+      ],
+      "freshness_remaining": 7
     }
   },
-  "last_updated": "2025-04-24T17:52:55.306207",
-  "freshness_last_updated": "2025-04-24T17:52:58.789898"
+  "last_updated": "2025-04-24T21:07:55.311413",
+  "freshness_last_updated": "2025-04-24T21:07:58.421564"
 }
