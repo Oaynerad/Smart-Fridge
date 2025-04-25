@@ -8,8 +8,6 @@ pydantic
 langchain_community
 pandas
 langchain_openai
-ast
-re
 streamlit
 Flask
 flask-cors
