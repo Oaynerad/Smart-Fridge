@@ -3,6 +3,7 @@ from ingredient_match import get_fridge_inventory
 from ingredient_match import process_fridge_recipes
 import json
 import re
+import openai
 
 # 辅助函数
 
@@ -84,15 +85,36 @@ def recommend_top_n_meals(final_df, fridge_df, top_n=3):
     recommendations.sort(key=lambda x: -x[0])
     return recommendations[:top_n]
 
-# 调用示例
+# 菜名翻译函数
+def translate_dish_names(results, client):
+    translated_results = []
+
+    for score, dish_id, dish_name  in results:
+        # 构造 prompt
+        prompt = f"请将下面的菜名翻译成英文，仅返回英文名称，不需要解释，也不要加其他字符：\n\n{dish_name}"
+
+        # 调用 GPT API
+        response = client.chat.completions.create(
+            model="gpt-4.1-mini",  # 可根据你账号实际模型权限修改
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0
+        )
+
+        # 获取翻译结果
+        translated_name = response.choices[0].message.content.strip()
+        translated_results.append((score, dish_id, translated_name))
+
+    return translated_results
 
 def recommend_recipes_from_fridge(raw_menu_path, fridge_inventory_path, dish_amount):
     fridge_df = get_fridge_inventory(fridge_inventory_path)
     final_df = process_fridge_recipes(fridge_inventory_path, raw_menu_path)
     recommendations = recommend_top_n_meals(final_df, fridge_df, dish_amount)
-    return recommendations
+    client = openai.OpenAI()
+    translated = translate_dish_names(recommendations, client)
+    return translated
 
-
+# 调用示例
 '''result = recommend_recipes_from_fridge('raw_menu_list.json', 'fridge_inventory.json',3)
 for score, dish_id, dish_name in result:
     print(f"✅ 推荐：{dish_name}（菜谱编号：{dish_id}），优先级得分：{score:.2f}")'''
