@@ -1,6 +1,9 @@
 import streamlit as st
 import json
 from datetime import datetime
+import time
+import requests
+from streamlit_autorefresh import st_autorefresh
 
 # --- load fridge inventory from JSON ---
 def load_fridge_items(path="fridge_inventory.json"):
@@ -18,7 +21,10 @@ def load_fridge_items(path="fridge_inventory.json"):
         })
     return items
 
-# Initialize state
+
+
+FLASK_SERVER = "http://192.168.31.173:5000"  # 比如 http://192.168.31.104
+
 if "page" not in st.session_state:
     st.session_state.page = "Home"
 if "selected_recipe" not in st.session_state:
@@ -26,32 +32,25 @@ if "selected_recipe" not in st.session_state:
 
 def go_to(page):
     st.session_state.page = page
-    
-fridge_items = load_fridge_items()
-# Main page - Home
+
 if st.session_state.page == "Home":
     st.title("🏠 Smart Fridge Home")
 
-    # Temperature display section
-    st.header("🌡️ Current Temperature")
-    st.metric("Fridge Temperature", "4°C", "-0.5°C")
-    if st.button("Switch to ℉"):
-        st.success("Switching to Fahrenheit is not yet implemented")
+    # 自动刷新 every 5s
+    st_autorefresh(interval=5_000, key="temp_refresh")
 
-    # Food storage section (dynamically loaded)
-    st.header("🧊 Food Storage in Fridge")
+    try:
+        resp = requests.get(f"{FLASK_SERVER}/temperature", timeout=5)
+        resp.raise_for_status()
+        data = resp.json()
+        temp_c = data.get("temp_c", "--")
+        temp_f = data.get("temp_f", "--")
+        st.metric("Fridge Temperature", f"{temp_c}°C", f"{temp_f}°F")
+    except Exception as e:
+        st.error(f"无法获取温度: {e}")
 
-    # if not fridge_items:
-    #     st.write("No items found in fridge inventory.")
-    # else:
-    #     for item in fridge_items:
-    #         st.write(
-    #             f"- **{item['name']}**  "
-    #             f"Added: {item['added_date']}  "
-    #             f"Freshness remaining: {item['freshness']} days"
-    #         )
 
-    # Navigation buttons
+    # —— 下面是你原有的按钮导航 —— 
     col1, col2 = st.columns(2)
     with col1:
         if st.button("📋 Food Details"):
@@ -60,13 +59,14 @@ if st.session_state.page == "Home":
         if st.button("🖼️ Image Display"):
             go_to("Image Display")
 
-    # Recipe recommendation button
     st.header("🍲 Recipe Recommendations")
     if st.button("🔍 Go to Recipe Recommendations"):
         go_to("Recipe Recommendations")
+
  
 # Food details page
 elif st.session_state.page == "Food Details":
+    fridge_items = load_fridge_items()
     st.title("📋 Food Details")
     for item in fridge_items:
         st.write(f"Item: {item['name']}, Added Date: {item['added_date']}")
@@ -74,7 +74,7 @@ elif st.session_state.page == "Food Details":
 
 # Image display page
 elif st.session_state.page == "Image Display":
-    st.title("🖼️ Fridge Image Display")
+    st.title("🖼️ Fridge Image Display") 
     st.image("https://placekitten.com/400/300", caption="Image taken inside the fridge")
     st.button("🔙 Back", on_click=lambda: go_to("Home"))
 

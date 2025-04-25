@@ -1,20 +1,25 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS  # 如果 Streamlit 和 Flask 不同域，需要打开 CORS
 
 app = Flask(__name__)
+CORS(app)
 
-# 定义一个路由，用来接收PICO发送过来的温度数据
+# 全局存一份最新读数
+latest = {"temp_c": None, "temp_f": None}
+
 @app.route('/temperature', methods=['POST'])
-def temperature():
-    # 如果你是用第一种方法发送数据（即URL编码的数据）
-    # 那么可以使用 request.form 来获取数据
+def temperature_post():
     temp_c = request.form.get('temp_c')
     temp_f = request.form.get('temp_f')
-    
-    # 你也可以打印出来或者存入数据库等
-    print(f"Current Temp：{temp_c}°C, {temp_f}°F")
-    
+    latest["temp_c"] = temp_c
+    latest["temp_f"] = temp_f
+    print(f"Current Temp: {temp_c}°C, {temp_f}°F")
     return jsonify({"status": "success"}), 200
 
+@app.route('/temperature', methods=['GET'])
+def temperature_get():
+    # 直接返回最新读数
+    return jsonify(latest), 200
+
 if __name__ == '__main__':
-    # 启动服务器，监听所有IP的5000端口
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=5000)
