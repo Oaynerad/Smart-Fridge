@@ -33,11 +33,12 @@ def SmartFridge():
 
 def save_recommendation_result(result, path="recommended_recipes.json"):
     data = []
-    for score, dish_id, dish_name in result:
+    for score, dish_id, dish_name,cook_method in result:
         data.append({
             "id": dish_id,
             "name": dish_name,
-            "score": score
+            "score": score,
+            "cook_method":cook_method
         })
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)

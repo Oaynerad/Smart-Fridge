@@ -31,7 +31,7 @@ def get_recommendations(path="recommended_recipes.json"):
         data = json.load(f)
     # 可以增加更多字段（如详情）作为 st.write 的内容
     for item in data:
-        item["details"] = f"Score: {item['score']:.2f} (Dish ID: {item['id']})"
+        item["details"] = f'''Score: {item['score']:.2f} (Dish ID: {item['id']}) :)  COOK METHOD:{item['cook_method']}'''
     return data
 
 

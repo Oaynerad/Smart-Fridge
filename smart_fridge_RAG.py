@@ -92,7 +92,7 @@ def build_langchain_pipeline(
     # )
     reranker=FastKeywordRetriever(documents)
     llm = ChatOpenAI(
-        model_name="gpt-4.1-mini",
+        model_name="gpt-4.1",
         openai_api_key=os.getenv("OPENAI_API_KEY"),
         temperature=0,
         max_tokens=4096
@@ -188,7 +188,7 @@ def smart_fridge_RAG(knowledge_path='RAG/scrape',keywords = ['鸡蛋盒', '生�
     sample_docs = docs_processed
     default_prompt = ('''
     ## Instruction:
-                      在下面的文本中，提取出所有的菜谱信息。每个菜谱的信息包括：菜谱编号、菜名、食材。
+                      在下面的文本中，提取出所有的菜谱信息。每个菜谱的信息包括：菜谱编号、菜名、食材，做法步骤。
                       菜谱不包含卡路里，碳足迹、蛋白质、脂肪、碳水化合物、纤维素等信息，请你根据食材自行计算给出并放进输出的json文件而不是null。
                       请将提取出的信息以JSON格式返回，每个菜谱的信息用大括号括起来，多个菜谱之间用逗号分隔。如果没有找到菜谱，请返回‘None’。
     ## Example 1:
@@ -200,7 +200,7 @@ def smart_fridge_RAG(knowledge_path='RAG/scrape',keywords = ['鸡蛋盒', '生�
         "菜名": "胡萝卜牛肉花卷",
         "卡路里": "1000大卡",
         "碳足迹": "0.5 千克二氧化碳当量"
-        "主料": [
+        "食材": [
             "胡萝卜（适量）",
             "牛肉（120g）",
             ],
@@ -216,7 +216,7 @@ def smart_fridge_RAG(knowledge_path='RAG/scrape',keywords = ['鸡蛋盒', '生�
         "菜名": "冷吃牛肉独家",
         "卡路里": "800大卡",
         "碳足迹": "0.8 千克二氧化碳当量"
-        "主料": [
+        "食材": [
             "牛前腿肉（一斤）",
             ],
         "蛋白质": "40g",
