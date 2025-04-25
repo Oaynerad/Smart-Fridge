@@ -90,20 +90,35 @@ def recommend_top_n_meals(final_df, fridge_df, top_n=3):
 def translate_dish_names(results, client):
     translated_results = []
 
-    for score, dish_id, dish_name, cook_method  in results:
-        # 构造 prompt
-        prompt = f"请将下面的菜名翻译成英文，仅返回英文名称，不需要解释，也不要加其他字符：\n\n{dish_name}"
+    for score, dish_id, dish_name, cook_method in results:
+        # 构造 prompt，同步翻译菜名和烹饪方式
+        prompt = f"""你是一名专业中英文翻译，请将下列中文翻译为英文：
+1. 菜名：{dish_name}
+2. 烹饪方式：{cook_method}
+
+请分别翻译这两个内容，仅返回英文翻译的结果，格式如下：
+<菜名英文>
+<烹饪方式英文>
+不要添加其他说明。
+### Example：
+ "Steamed Eggs"
+ "Cooking Method: Wash the eggs and place them in the egg steamer. Add an appropriate amount of water to the water level line of the steamer based on the number of eggs you want to steam. Cover the steamer, connect the power, and start steaming. Wait for the steamer to finish its work; generally, let it sit for a while after the indicator light goes off. Be careful of steam burns when opening the lid. After steaming, remove the eggs, and mix 1 to 2 grams of salt, 3 to 5 drops of dark soy sauce, and 2 to 3 drops of sesame oil in a small bowl. Pour the mixture over the eggs, then sprinkle with 1 to 2 grams of chopped cilantro and green onions."
+"""
 
         # 调用 GPT API
         response = client.chat.completions.create(
-            model="gpt-4.1-mini",  # 可根据你账号实际模型权限修改
+            model="gpt-4o",
             messages=[{"role": "user", "content": prompt}],
             temperature=0
         )
 
-        # 获取翻译结果
-        translated_name = response.choices[0].message.content.strip()
-        translated_results.append((score, dish_id, translated_name, cook_method))
+        # 提取翻译结果
+        content = response.choices[0].message.content.strip()
+        lines = content.split("\n")
+        translated_name = lines[0].strip()
+        translated_method = lines[1].strip() if len(lines) > 1 else ""
+
+        translated_results.append((score, dish_id, translated_name, translated_method))
 
     return translated_results
 

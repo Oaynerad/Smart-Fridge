@@ -1,20 +1,20 @@
 [
   {
     "id": 663467,
-    "name": "Steamed Egg",
-    "score": 9.120000000000001,
-    "cook_method": "将鸡蛋洗净放入蒸蛋器中，根据需要蒸的鸡蛋个数，加入适量的水到蒸蛋器的水位线处、盖上蒸蛋器盖子，接通电源开始蒸、等待蒸蛋器工作完成，一般指示灯熄灭后再焖一会儿即可、蒸好后打开盖子时要小心蒸汽烫伤、将鸡蛋放入蒸蛋器加适量水蒸好后取出，把1至2克盐、3至5滴老抽、2至3滴香油在小碗中拌匀浇淋在鸡蛋上，再撒上1至2克香菜和香葱碎。"
-  },
-  {
-    "id": 663602,
-    "name": "Stir-fried Tofu with Red Chili Peppers",
-    "score": 4.746,
-    "cook_method": "豆腐适量弄碎、红尖椒切碎粒、锅中加适量食用油烧热，下入豆腐碎、料酒、盐炒、加入红尖椒碎翻炒、再放入鸡精、小香葱花、翻炒出锅、盛入盘中，既美味、又营养。"
+    "name": "\"Steamed Eggs\"",
+    "score": 7.680000000000001,
+    "cook_method": "\"Cooking Method: Wash the eggs and place them in the egg steamer. Add an appropriate amount of water to the water level line of the steamer based on the number of eggs you want to steam. Cover the steamer, connect the power, and start steaming. Wait for the steamer to finish its work; generally, let it sit for a while after the indicator light goes off. Be careful of steam burns when opening the lid. After steaming, remove the eggs, and mix 1 to 2 grams of salt, 3 to 5 drops of dark soy sauce, and 2 to 3 drops of sesame oil in a small bowl. Pour the mixture over the eggs, then sprinkle with 1 to 2 grams of chopped cilantro and green onions.\""
   },
   {
     "id": 663409,
-    "name": "Carrot Soy Milk",
+    "name": "\"Carrot Soy Milk\"",
     "score": 3.664,
-    "cook_method": "胡萝卜洗净切块，把黄豆和胡萝卜块一起放入豆浆机，加入适量清水，启动豆浆机，打成豆浆即可。豆浆打好后，可根据个人口味加适量的糖调味。"
+    "cook_method": "\"Cooking Method: Wash and chop the carrots into pieces. Place the soybeans and carrot pieces into the soy milk maker, add an appropriate amount of water, and start the machine to make soy milk. Once the soy milk is ready, you can add sugar to taste according to personal preference.\""
+  },
+  {
+    "id": 663731,
+    "name": "\"Minced Pork with Steamed Eggplant\"",
+    "score": 3.12,
+    "cook_method": "\"Cooking Method: Peel the purple-skinned eggplants and cut them into pieces. Cut ginger, green chili, and red chili into sections and set aside. Clean the pork and cut it into small pieces. Heat a pan with peanut oil, add ginger, onion, green chili, and red chili, and stir-fry until fragrant. Add the pork and stir-fry until the moisture evaporates, then remove from the pan. Place the eggplant at the bottom, put the minced pork on top, and add oyster sauce, soy sauce, bean paste, and an appropriate amount of water to soak the eggplant. Cover the pan and simmer for 25 minutes, then add salt. If you prefer a softer texture, simmer for 30 minutes. Taste before serving, and if the flavor is sufficient, serve directly on a plate.\""
   }
 ]
