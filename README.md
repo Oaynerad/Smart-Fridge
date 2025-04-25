@@ -1,8 +1,34 @@
-# SmartFridgeTracker
+# Smart Fridge 
+## Installation
+
+1. **Clone the repo**:
+   ```bash
+   git clone <repository_url>
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ``` 
+
+## Temperature from PICO
+1. **run the `wifi_trans.py` on PICO**
+
+2. **run the flask server**:
+   ```bash
+   python server.py
+   ```
+   _WIFI password and server ip needs to be modified_
+
+3. **run UI.py**:
+  ```bash
+   streamlit run UI.py
+   ```
+## SmartFridgeTracker
 
 A lightweight Python utility to track and manage refrigerator inventory by analyzing images using a Vision-Language Model (VLM) via the OpenAI API. It detects items, normalizes names, reconciles synonyms, and calculates freshness over time.
 
-## Features
+### Features
 
 - **Image Encoding**: Convert local images to Base64 for API calls.
 - **VLM Integration**: Use OpenAI’s `gpt-4.1-mini` to recognize food items in images.
@@ -14,25 +40,14 @@ A lightweight Python utility to track and manage refrigerator inventory by analy
 - **Freshness Tracking**: Compute remaining shelf life (default 7 days) for each item.
 - **Standalone CLI Usage**: Process an image and output changes.
 
-## Installation
 
-1. **Clone the repo**:
-   ```bash
-   git clone <repository_url>
-   cd smart-fridge-tracker
-   ```
 
-2. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## Configuration
+### Configuration
 
 - **`db_path`**: Path to the JSON inventory file (`fridge_inventory.json` by default).
 - **OpenAI API Key**: Set via `OPENAI_API_KEY` environment variable.
 
-## Usage
+### Usage
 
 ```bash
 python smart_fridge.py 
@@ -47,15 +62,15 @@ This will:
 5. Compute and save freshness information.
 6. Print added/removed items and a timestamp.
 
-## Core Components
+### Core Components
 
-### `encode_image(image_path: str) -> str`
+#### `encode_image(image_path: str) -> str`
 Encodes an image to Base64 for embedding in requests.
 
-### `_normalize_name(name: str) -> str`
+#### `_normalize_name(name: str) -> str`
 Strips whitespace and lowercases names for deduplication.
 
-### `SmartFridgeTracker` Class
+#### `SmartFridgeTracker` Class
 
 - **`_load_inventory()` / `_save_inventory()`**: Manage JSON DB.
 - **`capture_image()`**: Verify image file exists.
@@ -65,11 +80,11 @@ Strips whitespace and lowercases names for deduplication.
 - **`update_freshness(shelf_life_days)`**: Calculate remaining days.
 - **`process_fridge_update(image_path)`**: End-to-end pipeline.
 
-## JSON Extraction Utility
+### JSON Extraction Utility
 
 The helper `extract_json_from_string(text: str)` uses regex to pull a JSON array from VLM responses, supporting both fenced and inline formats.
 
-## Example
+### Example
 
 ```python
 from smart_fridge_tracker import SmartFridgeTracker
